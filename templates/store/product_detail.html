@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} — OtakuForge{% endblock %}
+{% block meta_description %}{{ product.description|truncatewords:25 }}{% endblock %}
+
+{% block content %}
+<section class="section panel-frame panel-tilt">
+  <div class="panel-inner">
+    <div class="container">
+
+  <!-- ── Breadcrumb ───────────────────────────────────── -->
+  <nav class="breadcrumb">
+    <a href="{% url 'store:home' %}">Home</a>
+    <span>/</span>
+    <a href="{% url 'store:product_list' %}">Products</a>
+    <span>/</span>
+    <a href="{% url 'store:category_detail' slug=product.category.slug %}">{{ product.category.name }}</a>
+    <span>/</span>
+    <span>{{ product.name }}</span>
+  </nav>
+
+  <!-- ── Product layout ───────────────────────────────── -->
+  <div class="detail-grid">
+
+    <!-- Image -->
+    <div class="detail-img">
+      {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" />
+      {% else %}
+        <div class="detail-img-placeholder">🎌</div>
+      {% endif %}
+    </div>
+
+    <!-- Info -->
+    <div class="detail-info">
+      <span class="detail-category">{{ product.category.name }}</span>
+      <h1 class="detail-name">{{ product.name }}</h1>
+      <p class="detail-price">{{ product.display_price }}</p>
+
+      <div class="detail-stock">
+        {% if product.is_in_stock %}
+          <span class="badge-in">In Stock ({{ product.stock }} left)</span>
+              <form action="{% url 'store:add_to_cart' product.id %}" method="post" class="detail-actions"
+                data-product-id="{{ product.id }}"
+                data-product-name="{{ product.name }}"
+                data-product-price="{{ product.display_price }}"
+                data-product-url="{% url 'store:product_detail' slug=product.slug %}"
+                data-product-category="{{ product.category.name }}"
+                {% if product.image %}data-product-image="{{ product.image.url }}"{% else %}data-product-image=""{% endif %}>
+            {% csrf_token %}
+            <div class="qty-selector">
+              <button type="button" class="qty-btn qty-minus">-</button>
+              <input type="number" name="quantity" class="qty-input" value="1" min="1" max="{{ product.stock }}" />
+              <button type="button" class="qty-btn qty-plus">+</button>
+            </div>
+            <button type="submit" class="btn btn-primary">Add to Cart</button>
+          </form>
+        {% else %}
+          <span class="badge-out">Out of Stock</span>
+        {% endif %}
+      </div>
+
+      {% if product.description %}
+        <p class="detail-desc">{{ product.description }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- ── Related products ─────────────────────────────── -->
+  {% if related %}
+  <div class="related-section">
+    <h2 class="section-title">You Might Also Like</h2>
+    <div class="product-grid">
+      {% for item in related %}
+      <a href="{% url 'store:product_detail' slug=item.slug %}" class="product-card">
+        <div class="card-img">
+          {% if item.image %}
+            <img src="{{ item.image.url }}" alt="{{ item.name }}" loading="lazy" />
+          {% else %}
+            <div class="card-placeholder">🎌</div>
+          {% endif %}
+        </div>
+        <div class="card-body">
+          <span class="card-category">{{ item.category.name }}</span>
+          <h3 class="card-name">{{ item.name }}</h3>
+          <span class="card-price">{{ item.display_price }}</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+    </div>
+  </div>
+</section>
+{% endblock %}

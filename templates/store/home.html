@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}OtakuForge — Anime Merchandise{% endblock %}
+
+{% block content %}
+
+<!-- ── Hero ──────────────────────────────────────────── -->
+<section class="hero panel-frame dark panel-tilt full-bleed">
+  <div class="panel-inner">
+    <div class="speed-lines"></div>
+    <div class="container hero-content">
+      <h1>UNLEASH YOUR<br>INNER OTAKU</h1>
+      <div class="hero-sub">EXCLUSIVE MERCHANDISE FOR OTAKU ・ 新着商品</div>
+      <a href="{% url 'store:product_list' %}" class="impact-btn">SHOP NOW!</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Product grid ─────────────────────────────────── -->
+<section class="section panel-frame panel-tilt">
+  <div class="panel-inner">
+    <div class="container">
+      <h2 class="section-title">Featured Products</h2>
+      <span class="section-label">注目商品</span>
+
+      {% if featured_products %}
+      <div class="product-grid">
+        {% for product in featured_products %}
+          <a href="{% url 'store:product_detail' slug=product.slug %}" class="product-card"
+            data-product-id="{{ product.id }}"
+            data-product-name="{{ product.name }}"
+            data-product-price="{{ product.display_price }}"
+            data-product-url="{% url 'store:product_detail' slug=product.slug %}"
+            data-product-category="{{ product.category.name }}"
+            {% if product.image %}data-product-image="{{ product.image.url }}"{% else %}data-product-image=""{% endif %}>
+          <div class="card-img">
+            {% if product.image %}
+              <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy" />
+            {% else %}
+              <div class="card-placeholder">🎌</div>
+            {% endif %}
+          </div>
+
+          <div class="card-body">
+            <span class="card-category">{{ product.category.name }}</span>
+            <h3 class="card-name">{{ product.name }}</h3>
+            <span class="card-price">{{ product.display_price }}</span>
+            {% if not product.is_in_stock %}
+              <span class="card-oos">Out of Stock</span>
+            {% endif %}
+            <span class="add-to-cart" data-product-id="{{ product.id }}" role="button" tabindex="0"><span>ADD TO CART</span></span>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+      {% else %}
+        <div class="demo-note">DEMO LINEUP ・ 試作品</div>
+        <div class="product-grid">
+          <a href="#" class="product-card">
+            <div class="card-img">
+              <div class="card-placeholder">⚡</div>
+            </div>
+            <div class="card-body">
+              <span class="card-category">SHONEN</span>
+              <h3 class="card-name">Gojo Infinity Hoodie</h3>
+              <span class="card-price">INR 1,999.00</span>
+              <span class="add-to-cart" role="button" tabindex="0"><span>ADD TO CART</span></span>
+            </div>
+          </a>
+          <a href="#" class="product-card">
+            <div class="card-img">
+              <div class="card-placeholder">🤖</div>
+            </div>
+            <div class="card-body">
+              <span class="card-category">MECHA</span>
+              <h3 class="card-name">Unit-01 Panel Tee</h3>
+              <span class="card-price">INR 1,299.00</span>
+              <span class="add-to-cart" role="button" tabindex="0"><span>ADD TO CART</span></span>
+            </div>
+          </a>
+          <a href="#" class="product-card">
+            <div class="card-img">
+              <div class="card-placeholder">🐉</div>
+            </div>
+            <div class="card-body">
+              <span class="card-category">ISEKAI</span>
+              <h3 class="card-name">Slime King Plush</h3>
+              <span class="card-price">INR 999.00</span>
+              <span class="add-to-cart" role="button" tabindex="0"><span>ADD TO CART</span></span>
+            </div>
+          </a>
+          <a href="#" class="product-card">
+            <div class="card-img">
+              <div class="card-placeholder">🎸</div>
+            </div>
+            <div class="card-body">
+              <span class="card-category">SLICE OF LIFE</span>
+              <h3 class="card-name">Bocchi Pick Necklace</h3>
+              <span class="card-price">INR 499.00</span>
+              <span class="add-to-cart" role="button" tabindex="0"><span>ADD TO CART</span></span>
+            </div>
+          </a>
+          <a href="#" class="product-card">
+            <div class="card-img">
+              <div class="card-placeholder">👁️</div>
+            </div>
+            <div class="card-body">
+              <span class="card-category">HORROR</span>
+              <h3 class="card-name">Tomie A3 Art Print</h3>
+              <span class="card-price">INR 799.00</span>
+              <span class="add-to-cart" role="button" tabindex="0"><span>ADD TO CART</span></span>
+            </div>
+          </a>
+          <a href="#" class="product-card">
+            <div class="card-img">
+              <div class="card-placeholder">🪚</div>
+            </div>
+            <div class="card-body">
+              <span class="card-category">SHONEN</span>
+              <h3 class="card-name">Chainsaw Head Replica</h3>
+              <span class="card-price">INR 8,999.00</span>
+              <span class="add-to-cart" role="button" tabindex="0"><span>ADD TO CART</span></span>
+            </div>
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

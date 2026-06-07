@@ -1,0 +1,254 @@
+[
+  {
+    "model": "store.category",
+    "pk": 1,
+    "fields": {
+      "name": "Hoodies",
+      "slug": "hoodies",
+      "description": "Stay warm and stylish with our premium anime hoodies.",
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 2,
+    "fields": {
+      "name": "Posters",
+      "slug": "posters",
+      "description": "High-quality prints to decorate your room.",
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 3,
+    "fields": {
+      "name": "Figures",
+      "slug": "figures",
+      "description": "Detailed action figures and collectables.",
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 4,
+    "fields": {
+      "name": "Keychains",
+      "slug": "keychains",
+      "description": "Take your favorite characters everywhere you go.",
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 5,
+    "fields": {
+      "name": "T-Shirts",
+      "slug": "t-shirts",
+      "description": "Graphic tees inspired by iconic anime moments.",
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 6,
+    "fields": {
+      "name": "Joggers",
+      "slug": "joggers",
+      "description": "Comfort-fit joggers with anime-inspired details.",
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 1,
+    "fields": {
+      "category": 1,
+      "name": "Akatsuki Cloud Oversized Hoodie",
+      "slug": "akatsuki-cloud-hoodie",
+      "description": "A high-quality oversized hoodie featuring the iconic red clouds of the Akatsuki.",
+      "price": "1499.00",
+      "stock": 50,
+      "image": "",
+      "is_available": true,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 2,
+    "fields": {
+      "category": 1,
+      "name": "Attack on Titan Scout Regiment Hoodie",
+      "slug": "aot-scout-hoodie",
+      "description": "Dedicate your heart with this comfortable dark green Scout Regiment hoodie.",
+      "price": "1299.00",
+      "stock": 20,
+      "image": "",
+      "is_available": true,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 3,
+    "fields": {
+      "category": 2,
+      "name": "Demon Slayer Hashira Group Poster",
+      "slug": "demon-slayer-hashira-poster",
+      "description": "A vibrant A3 poster featuring all nine Hashira ready for battle.",
+      "price": "299.00",
+      "stock": 100,
+      "image": "",
+      "is_available": true,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 4,
+    "fields": {
+      "category": 2,
+      "name": "Jujutsu Kaisen Gojo Domain Expansion Poster",
+      "slug": "jjk-gojo-poster",
+      "description": "Matte finish poster showing Satoru Gojo's Infinite Void.",
+      "price": "349.00",
+      "stock": 0,
+      "image": "",
+      "is_available": true,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 5,
+    "fields": {
+      "category": 3,
+      "name": "One Piece Luffy Gear 5 Action Figure",
+      "slug": "luffy-gear-5-figure",
+      "description": "Highly detailed 20cm PVC figure of Monkey D. Luffy in his peak Gear 5 form.",
+      "price": "2999.00",
+      "stock": 15,
+      "image": "",
+      "is_available": true,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 6,
+    "fields": {
+      "category": 3,
+      "name": "Naruto Uzumaki Sage Mode Figure",
+      "slug": "naruto-sage-mode-figure",
+      "description": "A beautifully sculpted figure of Naruto wearing his iconic Sage Mode cloak.",
+      "price": "2499.00",
+      "stock": 30,
+      "image": "",
+      "is_available": true,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 7,
+    "fields": {
+      "category": 4,
+      "name": "Death Note L Metal Keychain",
+      "slug": "death-note-l-keychain",
+      "description": "Premium metallic keychain with the classic 'L' logo.",
+      "price": "199.00",
+      "stock": 200,
+      "image": "",
+      "is_available": true,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 8,
+    "fields": {
+      "category": 4,
+      "name": "Spy x Family Anya Forger Acrylic Keychain",
+      "slug": "spy-x-family-anya-keychain",
+      "description": "Cute acrylic keychain featuring Anya with her signature smug face.",
+      "price": "149.00",
+      "stock": 150,
+      "image": "",
+      "is_available": true,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 9,
+    "fields": {
+      "category": 5,
+      "name": "Uchiha Crest Graphic Tee",
+      "slug": "uchiha-crest-tee",
+      "description": "Soft black tee with an oversized Uchiha crest print and red trim accents.",
+      "price": "799.00",
+      "stock": 90,
+      "image": "",
+      "is_available": true,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 10,
+    "fields": {
+      "category": 5,
+      "name": "Hashira Lineup Street Tee",
+      "slug": "hashira-lineup-tee",
+      "description": "Cotton street tee featuring the full Hashira lineup in a bold back print.",
+      "price": "849.00",
+      "stock": 70,
+      "image": "",
+      "is_available": true,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 11,
+    "fields": {
+      "category": 6,
+      "name": "Survey Corps Utility Joggers",
+      "slug": "survey-corps-joggers",
+      "description": "Tapered joggers with stitched insignia, cargo pockets, and adjustable cuffs.",
+      "price": "1299.00",
+      "stock": 45,
+      "image": "",
+      "is_available": true,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 12,
+    "fields": {
+      "category": 6,
+      "name": "Cursed Energy Track Joggers",
+      "slug": "cursed-energy-joggers",
+      "description": "Jet black joggers with neon piping inspired by Jujutsu energy effects.",
+      "price": "1399.00",
+      "stock": 40,
+      "image": "",
+      "is_available": true,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  }
+]

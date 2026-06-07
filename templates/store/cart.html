@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Your Cart — OtakuForge{% endblock %}
+
+{% block content %}
+<section class="section panel-frame panel-tilt">
+  <div class="panel-inner">
+    <div class="container">
+  <nav class="breadcrumb">
+    <a href="{% url 'store:home' %}">Home</a>
+    <span>/</span>
+    <span>Cart</span>
+  </nav>
+
+  <h1 class="section-title">Your Cart</h1>
+
+    <div class="cart-wrap" data-cart-root>
+      <p class="empty" data-cart-empty>Your cart is currently empty. <a href="{% url 'store:product_list' %}" class="link-ink">Browse products</a></p>
+
+      <div data-cart-filled hidden>
+        <table class="cart-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Total</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody data-cart-body></tbody>
+        </table>
+
+        <div class="cart-actions">
+          <a href="{% url 'store:product_list' %}" class="link-ink">&larr; Continue Shopping</a>
+          <div class="cart-subtotal">
+            Subtotal: <span class="cart-total" data-cart-subtotal>INR 0.00</span>
+          </div>
+          <button type="button" class="btn btn-ghost" data-cart-clear>Clear Cart</button>
+        </div>
+        <div class="cart-cta">
+          <button class="btn btn-primary">Checkout</button>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

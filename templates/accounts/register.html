@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Register | OtakuForge{% endblock %}
+
+{% block content %}
+<section class="auth-panel">
+  <h1 class="auth-title">Create Account</h1>
+  <form class="auth-form" method="post" action="{% url 'accounts:register' %}">
+    {% csrf_token %}
+    <div class="auth-field">
+      <label for="email">Email</label>
+      <input class="auth-input" type="email" id="email" name="email" value="{{ email|default:'' }}" required />
+      {% if errors.email %}<div class="field-error">{{ errors.email }}</div>{% endif %}
+    </div>
+    <div class="auth-field">
+      <label for="name">Name</label>
+      <input class="auth-input" type="text" id="name" name="name" value="{{ name|default:'' }}" required />
+      {% if errors.name %}<div class="field-error">{{ errors.name }}</div>{% endif %}
+    </div>
+    <div class="auth-field">
+      <label for="password">Password</label>
+      <input class="auth-input" type="password" id="password" name="password" required />
+      {% if errors.password %}<div class="field-error">{{ errors.password }}</div>{% endif %}
+    </div>
+    <div class="auth-field">
+      <label for="confirm_password">Confirm Password</label>
+      <input class="auth-input" type="password" id="confirm_password" name="confirm_password" required />
+      {% if errors.confirm_password %}<div class="field-error">{{ errors.confirm_password }}</div>{% endif %}
+    </div>
+    <button class="auth-submit" type="submit">Send OTP</button>
+  </form>
+
+  <a class="google-btn" href="{% url 'accounts:google_login' %}">
+    <i class="fa-brands fa-google"></i>
+    Sign up with Google
+  </a>
+
+  <div class="auth-links">
+    Already have an account? <a href="{% url 'accounts:login' %}">Login</a>
+  </div>
+</section>
+{% endblock %}

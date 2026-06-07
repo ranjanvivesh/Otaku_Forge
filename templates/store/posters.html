@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Posters — OtakuForge{% endblock %}
+
+{% block content %}
+<section class="section panel-frame panel-tilt">
+  <div class="panel-inner">
+    <div class="container">
+
+      <!-- ── Breadcrumb ───────────────────────────────────── -->
+      <div class="breadcrumb-panel">
+        <a href="{% url 'store:home' %}">Home</a>
+        <span class="sep">&gt;</span>
+        <span>Posters</span>
+      </div>
+
+      <div class="category-hero">
+        <div class="speed-lines"></div>
+        <div class="hero-content">
+          <h1>Posters</h1>
+          <div class="jp-sub">WALL ART SELECT</div>
+          <p class="category-desc">Bold frames and iconic scenes for your anime corner.</p>
+          <div class="impact-badge">{{ product_count }} PRINTS</div>
+        </div>
+      </div>
+
+      <!-- ── Poster grid ─────────────────────────────────── -->
+      <div class="product-grid">
+        {% for product in products %}
+        <a href="{% url 'store:product_detail' slug=product.slug %}" class="product-card"
+           data-product-id="{{ product.id }}"
+           data-product-name="{{ product.name }}"
+           data-product-price="{{ product.display_price }}"
+           data-product-url="{% url 'store:product_detail' slug=product.slug %}"
+           data-product-category="{{ product.category.name }}"
+           {% if product.image %}data-product-image="{{ product.image.url }}"{% else %}data-product-image=""{% endif %}>
+          <div class="card-img">
+            {% if product.image %}
+              <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy" />
+            {% else %}
+              <div class="card-placeholder">🎌</div>
+            {% endif %}
+          </div>
+          <div class="card-body">
+            <span class="card-category">{{ product.category.name }}</span>
+            <h2 class="card-name">{{ product.name }}</h2>
+            <span class="card-price">{{ product.display_price }}</span>
+            {% if not product.is_in_stock %}
+              <span class="card-oos">Out of Stock</span>
+            {% endif %}
+            <span class="add-to-cart" role="button" tabindex="0"><span>ADD TO CART</span></span>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Search: "{{ query }}" — OtakuForge{% endblock %}
+
+{% block content %}
+<section class="section panel-frame panel-tilt">
+  <div class="panel-inner">
+    <div class="container">
+
+  <div class="breadcrumb-panel">
+    <a href="{% url 'store:home' %}">Home</a>
+    <span class="sep">&gt;</span>
+    <span>Search</span>
+  </div>
+
+  <div class="search-header">
+    <h1 class="search-title">
+      {% if result_count > 0 %}
+        {{ result_count }} result{{ result_count|pluralize }} for "{{ query }}"
+      {% else %}
+        No results for "{{ query }}"
+      {% endif %}
+    </h1>
+    <div class="impact-badge" id="result-badge">RESULTS</div>
+  </div>
+
+  <form class="search-bar" method="get">
+    <input type="text" name="q" placeholder="SEARCH THE ARCHIVES..." />
+    <button type="submit"><span>SEARCH</span></button>
+  </form>
+
+  {% if page_obj.object_list %}
+  <div class="product-grid">
+    {% for product in page_obj.object_list %}
+     <a href="{% url 'store:product_detail' slug=product.slug %}" class="product-card"
+       data-product-id="{{ product.id }}"
+       data-product-name="{{ product.name }}"
+       data-product-price="{{ product.display_price }}"
+       data-product-url="{% url 'store:product_detail' slug=product.slug %}"
+       data-product-category="{{ product.category.name }}"
+       {% if product.image %}data-product-image="{{ product.image.url }}"{% else %}data-product-image=""{% endif %}>
+      <div class="card-img">
+        {% if product.image %}
+          <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy" />
+        {% else %}
+          <div class="card-placeholder">🎌</div>
+        {% endif %}
+      </div>
+      <div class="card-body">
+        <span class="card-category">{{ product.category.name }}</span>
+        <h2 class="card-name">{{ product.name }}</h2>
+        <span class="card-price">{{ product.display_price }}</span>
+        <span class="add-to-cart" data-product-id="{{ product.id }}" role="button" tabindex="0"><span>ADD TO CART</span></span>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+    <div class="no-results">
+      <h2>NO RESULTS</h2>
+      <p>Try a different keyword or return to the catalog.</p>
+      <a href="{% url 'store:product_list' %}" class="impact-sticker">BACK TO CATALOG</a>
+    </div>
+  {% endif %}
+
+    </div>
+  </div>
+</section>
+{% endblock %}

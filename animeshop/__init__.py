@@ -1,0 +1,3 @@
+"""
+animeshop Django project package.
+"""

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile | OtakuForge{% endblock %}
+
+{% block content %}
+<section class="profile-card">
+  <h2>Profile</h2>
+  <div class="profile-line">Name: {{ request.user.name }}</div>
+  <div class="profile-line">Email: {{ request.user.email }}</div>
+  <div class="profile-line">
+    Login method: {% if request.user.google_id %}Google{% else %}Password{% endif %}
+  </div>
+  <div class="profile-line">Member since: {{ request.user.created_at|date:"F j, Y" }}</div>
+</section>
+{% endblock %}

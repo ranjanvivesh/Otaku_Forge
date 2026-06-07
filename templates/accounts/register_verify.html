@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Verify OTP | OtakuForge{% endblock %}
+
+{% block content %}
+<section class="auth-panel">
+  <h1 class="auth-title">Verify OTP</h1>
+  <p>We sent a 6-digit code to <strong>{{ masked_email }}</strong>.</p>
+
+  <form class="auth-form" method="post" action="{% url 'accounts:register_verify' %}" id="otp-form">
+    {% csrf_token %}
+    <input type="hidden" name="otp" id="otp" />
+    <div class="otp-grid" aria-label="OTP input">
+      {% for i in "123456" %}
+      <input class="otp-input" type="text" inputmode="numeric" maxlength="1" data-otp-digit />
+      {% endfor %}
+    </div>
+    <button class="auth-submit" type="submit">Verify</button>
+  </form>
+
+  <div class="resend-row">
+    <form method="post" action="{% url 'accounts:resend_otp' %}">
+      {% csrf_token %}
+      <button type="submit" id="resend-btn" disabled>Resend OTP</button>
+    </form>
+    <span id="resend-timer">Resend in 60s</span>
+  </div>
+
+  <div class="auth-links">
+    <a href="{% url 'accounts:register' %}">Back to registration</a>
+  </div>
+</section>
+
+<script>
+  const inputs = Array.from(document.querySelectorAll('[data-otp-digit]'));
+  const hiddenOtp = document.getElementById('otp');
+  const form = document.getElementById('otp-form');
+  const resendBtn = document.getElementById('resend-btn');
+  const resendTimer = document.getElementById('resend-timer');
+
+  inputs.forEach((input, idx) => {
+    input.addEventListener('input', (e) => {
+      const val = e.target.value.replace(/\D/g, '');
+      e.target.value = val;
+      if (val && inputs[idx + 1]) {
+        inputs[idx + 1].focus();
+      }
+    });
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' && !e.target.value && inputs[idx - 1]) {
+        inputs[idx - 1].focus();
+      }
+    });
+  });
+
+  form.addEventListener('submit', () => {
+    hiddenOtp.value = inputs.map(input => input.value).join('');
+  });
+
+  let remaining = 60;
+  const tick = () => {
+    remaining -= 1;
+    if (remaining <= 0) {
+      resendBtn.disabled = false;
+      resendTimer.textContent = 'You can resend now.';
+      return;
+    }
+    resendTimer.textContent = `Resend in ${remaining}s`;
+    setTimeout(tick, 1000);
+  };
+  setTimeout(tick, 1000);
+</script>
+{% endblock %}

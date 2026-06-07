@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MangaShop | Anime Merch</title>
+  
+  <!-- Google Fonts: Bangers (Display) & Sawarabi Mincho (Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Sawarabi+Mincho&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --white: #f0ece0;
+      --red: #cc1a1a;
+      --gold: #c9a84c;
+      --border-thick: 6px solid var(--black);
+      --shadow-ink: 4px 4px 0px var(--black);
+      --font-display: 'Bangers', cursive;
+      --font-body: 'Sawarabi Mincho', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Grain/Noise Overlay */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.35;
+      background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    h1, h2, h3, .display-text {
+      font-family: var(--font-display);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .shadow-text {
+      text-shadow: var(--shadow-ink);
+      color: var(--white);
+      -webkit-text-stroke: 1.5px var(--black);
+    }
+
+    .panel-frame {
+      position: relative;
+      margin: 2rem 1.5rem;
+      border: var(--border-thick);
+      background: var(--white);
+      color: var(--black);
+      box-shadow: 10px 10px 0px var(--black);
+      overflow: hidden;
+    }
+    .panel-frame.full-bleed {
+      margin-left: 0;
+      margin-right: 0;
+    }
+    .panel-frame::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, var(--black) 12%, transparent 12%);
+      background-size: 14px 14px;
+      opacity: 0.06;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .panel-frame.dark {
+      background: var(--black);
+      color: var(--white);
+    }
+    .panel-frame.dark::before {
+      background-image: radial-gradient(circle, var(--white) 12%, transparent 12%);
+      opacity: 0.08;
+    }
+    .panel-tilt {
+      transform: skewY(-2deg);
+    }
+    .panel-inner {
+      position: relative;
+      z-index: 2;
+    }
+    .panel-tilt .panel-inner {
+      transform: skewY(2deg);
+    }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      border-bottom: var(--border-thick);
+      background: var(--black);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 6px 0px var(--white);
+    }
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 70px;
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      color: var(--white);
+      text-decoration: none;
+      text-shadow: 2px 2px 0px var(--red);
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      align-items: center;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--white);
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      position: relative;
+    }
+    .nav-links a.nav-item::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0%;
+      height: 4px;
+      background: var(--red);
+      transition: width 0.3s ease;
+    }
+    .nav-links a.nav-item:hover::after {
+      width: 100%;
+    }
+    .cart-wrapper {
+      position: relative;
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: var(--white);
+    }
+    .cart-badge {
+      position: absolute;
+      top: -10px;
+      right: -12px;
+      background: var(--red);
+      color: var(--white);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--black);
+    }
+
+    /* ── HERO SECTION ── */
+    .hero {
+      position: relative;
+      padding: 7rem 0;
+      overflow: hidden;
+      background-color: var(--black);
+    }
+    .hero-jap {
+      position: absolute;
+      right: 5%;
+      top: 10%;
+      writing-mode: vertical-rl;
+      font-size: 6rem;
+      font-weight: 900;
+      opacity: 0.08;
+      color: var(--white);
+      z-index: 1;
+    }
+    .speed-lines {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 200%; height: 200%;
+      transform: translate(-50%, -50%);
+      background: repeating-conic-gradient(
+        from 0deg,
+        var(--white) 0deg 1deg,
+        transparent 1deg 7deg,
+        var(--white) 7deg 8deg,
+        transparent 8deg 18deg
+      );
+      opacity: 0.12;
+      animation: spin 90s linear infinite;
+      z-index: 1;
+    }
+    @keyframes spin { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+    }
+    .hero-title {
+      font-size: 5rem;
+      line-height: 1;
+      margin-bottom: 1rem;
+      color: var(--white);
+      text-shadow: var(--shadow-ink);
+      -webkit-text-stroke: 2px var(--black);
+    }
+    .hero-sub {
+      font-size: 1.5rem;
+      font-weight: 900;
+      background: var(--red);
+      color: var(--white);
+      display: inline-block;
+      padding: 0.5rem 1.5rem;
+      margin-bottom: 3rem;
+      transform: skewX(-10deg) rotate(-2deg);
+      border: 2px solid var(--black);
+      box-shadow: 4px 4px 0px var(--gold);
+    }
+    .impact-sticker {
+      display: inline-block;
+      background: var(--red);
+      color: var(--white);
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      padding: 1rem 3rem;
+      text-decoration: none;
+      border: var(--border-thick);
+      transform: rotate(3deg);
+      box-shadow: var(--shadow-ink);
+      transition: transform 0.1s;
+    }
+    .impact-sticker:active {
+      transform: rotate(0deg) scale(0.95);
+      box-shadow: 2px 2px 0px var(--black);
+    }
+
+    /* ── FILTER BAR ── */
+    .filter-section {
+      padding: 1.5rem 0;
+      background: var(--black);
+      position: sticky;
+      top: 70px;
+      z-index: 99;
+    }
+    .filter-bar {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .filter-bar::-webkit-scrollbar { display: none; }
+    .filter-btn {
+      background: var(--white);
+      color: var(--black);
+      border: 3px solid var(--white);
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      padding: 0.5rem 1.5rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+    }
+    .filter-btn.active {
+      background: var(--red);
+      color: var(--white);
+      border-color: var(--red);
+    }
+
+    /* ── PRODUCTS SECTION ── */
+    .products-section {
+      padding: 5rem 0;
+      position: relative;
+    }
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      gap: 1rem;
+      margin-bottom: 3rem;
+      border-bottom: 4px solid var(--black);
+      padding-bottom: 1rem;
+      position: relative;
+    }
+    .section-header h2 {
+      font-size: 3.5rem;
+      color: var(--red);
+      text-shadow: 4px 4px 0px var(--black);
+      -webkit-text-stroke: 1px var(--black);
+      line-height: 0.9;
+    }
+    .section-header .jap-label {
+      font-weight: 900;
+      font-size: 1.5rem;
+      color: var(--black);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 2.5rem;
+    }
+
+    .product-card {
+      border: var(--border-thick);
+      background: var(--white);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 6px 6px 0px var(--black);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .product-card.hide {
+      display: none;
+    }
+    .product-card:hover {
+      transform: translateY(-8px) translate(-4px, -4px);
+      border-color: var(--gold);
+      box-shadow: 8px 8px 0px var(--black);
+    }
+    
+    .card-img-wrap {
+      height: 300px;
+      border-bottom: var(--border-thick);
+      position: relative;
+      background: var(--black);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .halftone-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: radial-gradient(circle, var(--white) 25%, transparent 25%);
+      background-size: 6px 6px;
+      opacity: 0.2;
+    }
+    .card-placeholder-icon {
+      color: var(--white);
+      font-size: 5rem;
+      z-index: 2;
+      opacity: 0.9;
+      text-shadow: 4px 4px 0px var(--red);
+    }
+
+    .card-info {
+      padding: 1.5rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    /* Subtle dot pattern behind text */
+    .card-info::before {
+      content: '';
+      position: absolute;
+      top:0; left:0; right:0; bottom:0;
+      background-image: radial-gradient(circle, var(--black) 10%, transparent 10%);
+      background-size: 10px 10px;
+      opacity: 0.05;
+      z-index: 0;
+    }
+    .card-info > * { position: relative; z-index: 1; }
+    
+    .card-genre {
+      font-size: 0.8rem;
+      font-weight: 900;
+      color: var(--red);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 0.5rem;
+    }
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .card-price {
+      font-family: var(--font-display);
+      color: var(--gold);
+      font-size: 2.2rem;
+      text-shadow: 2px 2px 0px var(--black);
+      -webkit-text-stroke: 1px var(--black);
+      margin-top: auto;
+      margin-bottom: 1.5rem;
+    }
+    
+    .add-to-cart {
+      background: var(--black);
+      color: var(--white);
+      border: 2px solid var(--black);
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      padding: 0.75rem;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: color 0.2s;
+    }
+    .add-to-cart::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 0; height: 0;
+      background: var(--red);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.4s ease, height 0.4s ease;
+      z-index: 0;
+    }
+    .add-to-cart:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+    .add-to-cart span {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── FEATURED DROP BANNER ── */
+    .drop-banner {
+      background: var(--black);
+      padding: 6rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .drop-watermark {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) rotate(-5deg);
+      font-family: var(--font-display);
+      font-size: 12rem;
+      color: var(--white);
+      opacity: 0.04;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .drop-panel {
+      position: relative;
+      z-index: 10;
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+      background: var(--red);
+      border: var(--border-thick);
+      padding: 3rem;
+      box-shadow: 15px 15px 0px var(--gold);
+      transform: skewY(-2deg);
+    }
+    .drop-panel > * {
+      transform: skewY(2deg); /* Unskew contents */
+    }
+    .badge {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--black);
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      padding: 0.5rem 1rem;
+      border: 3px solid var(--black);
+      margin-bottom: 1rem;
+    }
+    .drop-title {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: var(--white);
+      text-shadow: var(--shadow-ink);
+      -webkit-text-stroke: 1px var(--black);
+    }
+    .timer {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .time-box {
+      background: var(--white);
+      color: var(--black);
+      border: 3px solid var(--black);
+      padding: 1rem;
+      min-width: 80px;
+      box-shadow: 4px 4px 0px var(--black);
+    }
+    .time-val {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      line-height: 1;
+    }
+    .time-label {
+      font-size: 0.9rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      background: var(--black);
+      color: var(--white);
+      padding: 5rem 0 2rem;
+      position: relative;
+    }
+    .footer .halftone-overlay {
+      background-image: radial-gradient(circle, var(--white) 20%, transparent 20%);
+      opacity: 0.05;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      position: relative;
+      z-index: 10;
+    }
+    .footer-brand h2 {
+      font-size: 4rem;
+      color: var(--red);
+      margin-bottom: 1rem;
+      text-shadow: 4px 4px 0px var(--black);
+      -webkit-text-stroke: 1px var(--white);
+    }
+    .socials {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .socials a {
+      color: var(--white);
+      font-size: 2rem;
+      transition: transform 0.2s, color 0.2s;
+    }
+    .socials a:hover {
+      color: var(--red);
+      transform: translateY(-5px);
+    }
+    .newsletter h3 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--gold);
+      text-shadow: 4px 4px 0px var(--black);
+    }
+    .news-form {
+      display: flex;
+      margin-top: 1rem;
+    }
+    .news-form input {
+      flex-grow: 1;
+      padding: 1rem;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: bold;
+      border: 4px solid var(--white);
+      background: transparent;
+      color: var(--white);
+      outline: none;
+    }
+    .news-form button {
+      background: var(--red);
+      color: var(--white);
+      border: 4px solid var(--white);
+      border-left: none;
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      padding: 0 1.5rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .news-form button:hover {
+      background: var(--gold);
+      color: var(--black);
+    }
+    .footer-bottom {
+      text-align: center;
+      margin-top: 4rem;
+      font-weight: bold;
+      position: relative;
+      z-index: 10;
+    }
+
+    @media (max-width: 1024px) {
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 768px) {
+      .panel-frame { margin: 1.5rem 1rem; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .hero-title { font-size: 3.5rem; }
+      .hero-jap { display: none; }
+      .drop-title { font-size: 2rem; }
+      .time-box { min-width: 60px; padding: 0.5rem; }
+      .time-val { font-size: 2rem; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo">MANGA<span style="color:var(--red)">SHOP</span></a>
+      <ul class="nav-links">
+        <li><a href="#products" class="nav-item">CATALOG</a></li>
+        <li><a href="#drop" class="nav-item">LATEST DROP</a></li>
+        <li>
+          <div class="cart-wrapper">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="cart-badge" id="cart-count">0</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="hero panel-frame dark panel-tilt full-bleed">
+    <div class="panel-inner">
+      <div class="speed-lines"></div>
+      <div class="hero-jap">新着商品</div>
+      <div class="container hero-content">
+        <h1 class="hero-title">UNLEASH YOUR<br>INNER OTAKU</h1>
+        <div class="hero-sub">EXCLUSIVE MANGA MERCHANDISE ・ 漫画魂</div>
+        <br>
+        <a href="#products" class="impact-sticker">SHOP NOW!</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- GENRE FILTER BAR -->
+  <section class="filter-section panel-frame dark" id="products">
+    <div class="panel-inner">
+      <div class="container">
+        <div class="filter-bar">
+          <button class="filter-btn active" data-filter="all">ALL</button>
+          <button class="filter-btn" data-filter="shonen">SHONEN</button>
+          <button class="filter-btn" data-filter="isekai">ISEKAI</button>
+          <button class="filter-btn" data-filter="mecha">MECHA</button>
+          <button class="filter-btn" data-filter="slice">SLICE OF LIFE</button>
+          <button class="filter-btn" data-filter="horror">HORROR</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS GRID -->
+  <section class="products-section panel-frame panel-tilt">
+    <div class="panel-inner">
+      <div class="container">
+        <div class="section-header">
+          <h2>NEW ARRIVALS</h2>
+          <span class="jap-label">新着商品</span>
+        </div>
+
+        <div class="grid" id="product-grid">
+      <!-- Card 1 -->
+      <div class="product-card" data-genre="shonen">
+        <div class="card-img-wrap">
+          <div class="halftone-overlay"></div>
+          <i class="fa-solid fa-bolt card-placeholder-icon"></i>
+        </div>
+        <div class="card-info">
+          <span class="card-genre">SHONEN</span>
+          <h3 class="card-title">Gojo Satoru Infinity Hoodie</h3>
+          <div class="card-price">$65.00</div>
+          <button class="add-to-cart"><span>ADD TO CART</span></button>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="product-card" data-genre="mecha">
+        <div class="card-img-wrap">
+          <div class="halftone-overlay"></div>
+          <i class="fa-solid fa-robot card-placeholder-icon"></i>
+        </div>
+        <div class="card-info">
+          <span class="card-genre">MECHA</span>
+          <h3 class="card-title">Evangelion Unit-01 Graphic Tee</h3>
+          <div class="card-price">$35.00</div>
+          <button class="add-to-cart"><span>ADD TO CART</span></button>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="product-card" data-genre="isekai">
+        <div class="card-img-wrap">
+          <div class="halftone-overlay"></div>
+          <i class="fa-solid fa-dragon card-placeholder-icon"></i>
+        </div>
+        <div class="card-info">
+          <span class="card-genre">ISEKAI</span>
+          <h3 class="card-title">Rimuru Tempest Slime Plushie</h3>
+          <div class="card-price">$28.00</div>
+          <button class="add-to-cart"><span>ADD TO CART</span></button>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="product-card" data-genre="slice">
+        <div class="card-img-wrap">
+          <div class="halftone-overlay"></div>
+          <i class="fa-solid fa-guitar card-placeholder-icon"></i>
+        </div>
+        <div class="card-info">
+          <span class="card-genre">SLICE OF LIFE</span>
+          <h3 class="card-title">Bocchi The Rock! Pick Necklace</h3>
+          <div class="card-price">$15.00</div>
+          <button class="add-to-cart"><span>ADD TO CART</span></button>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="product-card" data-genre="horror">
+        <div class="card-img-wrap">
+          <div class="halftone-overlay"></div>
+          <i class="fa-solid fa-eye card-placeholder-icon"></i>
+        </div>
+        <div class="card-info">
+          <span class="card-genre">HORROR</span>
+          <h3 class="card-title">Junji Ito Tomie A3 Art Print</h3>
+          <div class="card-price">$22.00</div>
+          <button class="add-to-cart"><span>ADD TO CART</span></button>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="product-card" data-genre="shonen">
+        <div class="card-img-wrap">
+          <div class="halftone-overlay"></div>
+          <i class="fa-solid fa-skull card-placeholder-icon"></i>
+        </div>
+        <div class="card-info">
+          <span class="card-genre">SHONEN</span>
+          <h3 class="card-title">Denji Chainsaw Head Replica</h3>
+          <div class="card-price">$120.00</div>
+          <button class="add-to-cart"><span>ADD TO CART</span></button>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED DROP -->
+  <section class="drop-banner panel-frame dark full-bleed" id="drop">
+    <div class="panel-inner">
+      <div class="drop-watermark">EXCLUSIVE</div>
+      <div class="drop-panel">
+        <div class="badge">LIMITED DROP</div>
+        <h2 class="drop-title">AKIRA CAPSULE COLLECTION</h2>
+        <p style="font-weight:bold; font-size: 1.2rem;">Available only while supplies last. Secure yours before the timer runs out!</p>
+        
+        <div class="timer">
+          <div class="time-box">
+            <div class="time-val" id="days">02</div>
+            <div class="time-label">DAYS</div>
+          </div>
+          <div class="time-box">
+            <div class="time-val" id="hours">14</div>
+            <div class="time-label">HOURS</div>
+          </div>
+          <div class="time-box">
+            <div class="time-val" id="mins">45</div>
+            <div class="time-label">MINS</div>
+          </div>
+          <div class="time-box">
+            <div class="time-val" id="secs">30</div>
+            <div class="time-label">SECS</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer panel-frame dark panel-tilt">
+    <div class="panel-inner">
+      <div class="halftone-overlay"></div>
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <h2>MANGA<span style="color:var(--white)">SHOP</span></h2>
+          <p style="font-weight:bold; font-size:1.1rem; max-width: 400px;">
+            The ultimate destination for premium anime apparel, figures, and accessories. 
+            Straight out of the pages into your closet.
+          </p>
+          <div class="socials">
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+          </div>
+        </div>
+        <div class="newsletter">
+          <h3>JOIN THE GUILD</h3>
+          <p style="font-weight:bold;">Sign up for exclusive drops and discounts.</p>
+          <form class="news-form" onsubmit="event.preventDefault();">
+            <input type="email" placeholder="ENTER YOUR EMAIL..." required>
+            <button type="submit">SUBMIT</button>
+          </form>
+        </div>
+      </div>
+      <div class="footer-bottom container">
+        &copy; 2026 MANGASHOP. ALL RIGHTS RESERVED.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      
+      // 1. Cart Icon Increment
+      const cartBadge = document.getElementById('cart-count');
+      const addBtns = document.querySelectorAll('.add-to-cart');
+      let cartCount = 0;
+
+      addBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          // Prevent page jump if it was an anchor
+          e.preventDefault();
+          cartCount++;
+          cartBadge.textContent = cartCount;
+          
+          // Small bump animation
+          cartBadge.style.transform = 'scale(1.5)';
+          setTimeout(() => {
+            cartBadge.style.transform = 'scale(1)';
+          }, 200);
+        });
+      });
+
+      // 2. Genre Filter Tabs
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const productCards = document.querySelectorAll('.product-card');
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Active state toggle
+          filterBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          const filter = btn.getAttribute('data-filter');
+
+          // Show/hide cards
+          productCards.forEach(card => {
+            if (filter === 'all' || card.getAttribute('data-genre') === filter) {
+              card.classList.remove('hide');
+            } else {
+              card.classList.add('hide');
+            }
+          });
+        });
+      });
+
+      // 3. Countdown Timer
+      // Set to exactly 2 days, 14 hours, 45 mins, 30 secs from page load for the demo
+      let timeRemaining = (2 * 24 * 60 * 60) + (14 * 60 * 60) + (45 * 60) + 30;
+
+      const daysEl = document.getElementById('days');
+      const hoursEl = document.getElementById('hours');
+      const minsEl = document.getElementById('mins');
+      const secsEl = document.getElementById('secs');
+
+      function updateTimer() {
+        if (timeRemaining <= 0) return;
+        timeRemaining--;
+
+        const d = Math.floor(timeRemaining / (24 * 60 * 60));
+        const h = Math.floor((timeRemaining % (24 * 60 * 60)) / (60 * 60));
+        const m = Math.floor((timeRemaining % (60 * 60)) / 60);
+        const s = Math.floor(timeRemaining % 60);
+
+        daysEl.textContent = d.toString().padStart(2, '0');
+        hoursEl.textContent = h.toString().padStart(2, '0');
+        minsEl.textContent = m.toString().padStart(2, '0');
+        secsEl.textContent = s.toString().padStart(2, '0');
+      }
+
+      setInterval(updateTimer, 1000);
+    });
+  </script>
+</body>
+</html>
